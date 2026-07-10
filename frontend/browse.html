@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Recipes — RecipeNest</title>
+  <meta name="description" content="Discover thousands of recipes from home cooks and chefs around the world. Filter by category, difficulty, and time." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/browse.css" />
+</head>
+<body>
+
+<!-- ─── Nav ───────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">🍴</div>
+        RecipeNest
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="browse.html" class="nav__link">Browse</a></li>
+        <li><a href="create.html" class="nav__link">Publish</a></li>
+        <li><a href="profile.html" class="nav__link">My Collection</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="btn btn--outline btn--sm" onclick="openModal('auth-modal')">Sign in</button>
+        <button class="btn btn--primary btn--sm" onclick="openModal('auth-modal')">Join free</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="browse-header">
+    <div class="container">
+      <h1>Browse recipes</h1>
+      <p>12,841 recipes from cooks around the world</p>
+      <div class="browse-toolbar">
+        <div class="browse-search">
+          <span style="color:var(--ink-muted);">🔍</span>
+          <input type="text" id="recipe-search" placeholder="Search recipes, ingredients…" />
+        </div>
+        <div class="browse-filters">
+          <select class="filter-select" id="time-filter">
+            <option value="">⏱ Any time</option>
+            <option value="15">Under 15 min</option>
+            <option value="30">Under 30 min</option>
+            <option value="60">Under 1 hour</option>
+          </select>
+          <select class="filter-select" id="diet-filter">
+            <option value="">🥦 Any diet</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="gluten-free">Gluten-free</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category pills -->
+  <div class="container">
+    <div class="cat-pills" id="cat-pills">
+      <button class="cat-pill active" data-filter="all">🍽️ All</button>
+      <button class="cat-pill" data-filter="breakfast">🥞 Breakfast</button>
+      <button class="cat-pill" data-filter="lunch">🥗 Lunch</button>
+      <button class="cat-pill" data-filter="dinner">🍝 Dinner</button>
+      <button class="cat-pill" data-filter="dessert">🍰 Desserts</button>
+      <button class="cat-pill" data-filter="baking">🍞 Baking</button>
+      <button class="cat-pill" data-filter="drinks">🍹 Drinks</button>
+      <button class="cat-pill" data-filter="snacks">🥨 Snacks</button>
+    </div>
+
+    <div class="browse-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Categories</div>
+          <ul class="sidebar-list">
+            <li><a href="#" class="active">All recipes <span class="count">12.8k</span></a></li>
+            <li><a href="#">Breakfast <span class="count">1.2k</span></a></li>
+            <li><a href="#">Lunch <span class="count">2.4k</span></a></li>
+            <li><a href="#">Dinner <span class="count">3.8k</span></a></li>
+            <li><a href="#">Desserts <span class="count">2.1k</span></a></li>
+            <li><a href="#">Baking <span class="count">890</span></a></li>
+            <li><a href="#">Drinks <span class="count">640</span></a></li>
+            <li><a href="#">Snacks <span class="count">520</span></a></li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Difficulty</div>
+          <div class="difficulty-btns">
+            <button class="diff-btn active" onclick="filterDiff(this)">All</button>
+            <button class="diff-btn" onclick="filterDiff(this)">Easy</button>
+            <button class="diff-btn" onclick="filterDiff(this)">Medium</button>
+            <button class="diff-btn" onclick="filterDiff(this)">Hard</button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Dietary</div>
+          <ul class="sidebar-list">
+            <li><a href="#">Vegetarian</a></li>
+            <li><a href="#">Vegan</a></li>
+            <li><a href="#">Gluten-free</a></li>
+            <li><a href="#">Dairy-free</a></li>
+            <li><a href="#">Nut-free</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Recipe grid -->
+      <div>
+        <div class="results-top">
+          <span class="results-count" id="result-count">Showing 8 of 12,841 recipes</span>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select class="sort-select" id="sort-select">
+              <option value="popular">Most popular</option>
+              <option value="recent">Most recent</option>
+              <option value="rating">Highest rated</option>
+              <option value="time">Quickest</option>
+            </select>
+            <div class="view-toggle">
+              <button class="view-btn active" id="grid-view-btn" title="Grid view" onclick="setView('grid')">⊞</button>
+              <button class="view-btn" id="list-view-btn" title="List view" onclick="setView('list')">☰</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid view -->
+        <div id="grid-container" class="recipe-grid">
+          <article class="recipe-card fade-in" data-category="breakfast">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe1.png" alt="Avocado Toast" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag tag--sage">Breakfast</span>
+                <span class="tag">Easy</span>
+                <span class="tag">15 min</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Smashed Avocado Toast with Poached Egg</h3></a>
+              <p class="recipe-card__desc">Creamy avocado on toasted sourdough, topped with a perfectly poached egg.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">S</div><span>Sarah Chen</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.8</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="recipe-card fade-in" data-category="dessert">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe2.png" alt="Lava Cake" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag tag--rust">Dessert</span>
+                <span class="tag">Medium</span>
+                <span class="tag">25 min</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Molten Chocolate Lava Cake</h3></a>
+              <p class="recipe-card__desc">Warm, gooey chocolate cake with a runny molten centre.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">M</div><span>Marco Rossi</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="recipe-card fade-in" data-category="dinner">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe3.png" alt="Thai Curry" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag">Dinner</span>
+                <span class="tag">Medium</span>
+                <span class="tag">50 min</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Authentic Thai Green Curry</h3></a>
+              <p class="recipe-card__desc">Fragrant curry made with homemade green paste and coconut milk.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">A</div><span>Arisa Tan</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="recipe-card fade-in" data-category="baking">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe4.png" alt="Sourdough" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag">Baking</span>
+                <span class="tag">Hard</span>
+                <span class="tag">2 hrs</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Rustic Sourdough Loaf</h3></a>
+              <p class="recipe-card__desc">Crusty sourdough using a 100% hydration starter. Worth every minute.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">J</div><span>James Park</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.7</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="recipe-card fade-in" data-category="lunch">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe5.png" alt="Chickpea Bowl" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag tag--sage">Lunch</span>
+                <span class="tag">Easy</span>
+                <span class="tag">10 min</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Mediterranean Chickpea Bowl</h3></a>
+              <p class="recipe-card__desc">Vibrant bowl with roasted chickpeas, feta and lemony tahini dressing.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">L</div><span>Leila Hassan</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★☆</span> 4.6</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="recipe-card fade-in" data-category="dinner">
+            <div class="recipe-card__img-wrap">
+              <img src="assets/images/recipe3.png" alt="Pasta" class="recipe-card__img" />
+              <button class="recipe-card__bookmark">♡</button>
+            </div>
+            <div class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="tag">Dinner</span>
+                <span class="tag">Easy</span>
+                <span class="tag">20 min</span>
+              </div>
+              <a href="recipe.html"><h3 class="recipe-card__title">Cacio e Pepe Pasta</h3></a>
+              <p class="recipe-card__desc">The Roman classic — just three ingredients done perfectly.</p>
+              <div class="recipe-card__footer">
+                <div class="recipe-card__author"><div class="avatar">R</div><span>Riya Sharma</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 5.0</div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- List view (hidden by default) -->
+        <div id="list-container" style="display:none;">
+          <div class="recipe-list-item">
+            <img src="assets/images/recipe1.png" alt="Avocado Toast" />
+            <div class="recipe-list-item__body">
+              <div class="recipe-card__meta"><span class="tag tag--sage">Breakfast</span><span class="tag">Easy</span><span class="tag">15 min</span></div>
+              <a href="recipe.html"><h3 class="recipe-list-item__title">Smashed Avocado Toast with Poached Egg</h3></a>
+              <div class="stat-row mt-8">
+                <div class="recipe-card__author"><div class="avatar">S</div><span>Sarah Chen</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.8 (142 reviews)</div>
+                <button class="recipe-card__bookmark" style="position:static;width:auto;height:auto;background:none;border:none;font-size:1.2rem;">♡</button>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-list-item">
+            <img src="assets/images/recipe2.png" alt="Lava Cake" />
+            <div class="recipe-list-item__body">
+              <div class="recipe-card__meta"><span class="tag tag--rust">Dessert</span><span class="tag">Medium</span><span class="tag">25 min</span></div>
+              <a href="recipe.html"><h3 class="recipe-list-item__title">Molten Chocolate Lava Cake</h3></a>
+              <div class="stat-row mt-8">
+                <div class="recipe-card__author"><div class="avatar">M</div><span>Marco Rossi</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9 (238 reviews)</div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-list-item">
+            <img src="assets/images/recipe3.png" alt="Thai Curry" />
+            <div class="recipe-list-item__body">
+              <div class="recipe-card__meta"><span class="tag">Dinner</span><span class="tag">Medium</span><span class="tag">50 min</span></div>
+              <a href="recipe.html"><h3 class="recipe-list-item__title">Authentic Thai Green Curry</h3></a>
+              <div class="stat-row mt-8">
+                <div class="recipe-card__author"><div class="avatar">A</div><span>Arisa Tan</span></div>
+                <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9 (189 reviews)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="page-btn wide">← Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span style="display:flex;align-items:center;padding:0 4px;color:var(--ink-muted);">…</span>
+          <button class="page-btn">48</button>
+          <button class="page-btn wide">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ─── Auth Modal ───────────────────────────────────────── -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal__close" onclick="closeModal('auth-modal')">✕</button>
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:2rem;margin-bottom:8px;">🍴</div>
+      <h2 style="font-size:1.5rem;">Join RecipeNest</h2>
+      <p style="color:var(--ink-muted);font-size:0.875rem;margin-top:6px;">Sign in to save and share recipes</p>
+    </div>
+    <form onsubmit="handleAuth(event)">
+      <div class="form-group mb-16">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com" />
+      </div>
+      <div class="form-group" style="margin-bottom:24px;">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn btn--primary w-full" style="padding:12px;">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/browse.js"></script>
+</body>
+</html>

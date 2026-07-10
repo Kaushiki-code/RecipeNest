@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sarah Chen — RecipeNest Profile</title>
+  <meta name="description" content="View recipes published and saved by Sarah Chen on RecipeNest." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+<!-- ─── Nav ───────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">🍴</div>
+        RecipeNest
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="browse.html" class="nav__link">Browse</a></li>
+        <li><a href="create.html" class="nav__link">Publish</a></li>
+        <li><a href="profile.html" class="nav__link">My Collection</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="create.html" class="btn btn--primary btn--sm">+ New recipe</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- ─── Profile Header ─────────────────────────────── -->
+  <div class="profile-header">
+    <div class="profile-banner">
+      <img src="assets/images/hero.png" alt="Profile banner" class="profile-banner-img" />
+    </div>
+    <div class="container">
+      <div class="profile-info">
+        <div class="profile-avatar">S</div>
+        <div class="profile-details">
+          <h1 class="profile-name">Sarah Chen</h1>
+          <p class="profile-bio">Home cook & food enthusiast · Sharing recipes from my San Francisco kitchen.</p>
+          <div class="profile-location">
+            <span>📍</span>
+            <span>San Francisco, CA</span>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat__num">24</div>
+            <div class="profile-stat__label">Recipes</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat__num">847</div>
+            <div class="profile-stat__label">Saves</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat__num">312</div>
+            <div class="profile-stat__label">Followers</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-left:auto;">
+          <button class="btn btn--outline btn--sm" onclick="switchTab('edit')">Edit profile</button>
+          <button class="btn btn--ghost btn--sm" onclick="showToast('Profile link copied!','success')">↗ Share</button>
+        </div>
+      </div>
+
+      <!-- Tab nav -->
+      <div class="profile-tabs">
+        <button class="profile-tab active" data-tab="my-recipes" onclick="switchTab('my-recipes')">My recipes</button>
+        <button class="profile-tab" data-tab="saved" onclick="switchTab('saved')">Saved collection</button>
+        <button class="profile-tab" data-tab="activity" onclick="switchTab('activity')">Activity</button>
+        <button class="profile-tab" data-tab="edit" onclick="switchTab('edit')">Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="profile-layout">
+      <div>
+        <!-- ── My Recipes ── -->
+        <div class="tab-panel active" id="tab-my-recipes">
+          <div class="collection-header">
+            <h2>Published recipes <span style="color:var(--ink-muted);font-weight:400;">(24)</span></h2>
+            <a href="create.html" class="btn btn--primary btn--sm">+ New recipe</a>
+          </div>
+          <div class="recipe-grid">
+            <article class="recipe-card fade-in">
+              <div class="recipe-card__img-wrap">
+                <img src="assets/images/recipe1.png" alt="Avocado Toast" class="recipe-card__img" />
+                <button class="recipe-card__bookmark saved" style="background:var(--rust);color:white;">♥</button>
+              </div>
+              <div class="recipe-card__body">
+                <div class="recipe-card__meta">
+                  <span class="tag tag--sage">Breakfast</span>
+                  <span class="tag">15 min</span>
+                </div>
+                <a href="recipe.html"><h3 class="recipe-card__title">Smashed Avocado Toast with Poached Egg</h3></a>
+                <p class="recipe-card__desc">Creamy avocado on toasted sourdough with a perfectly poached egg.</p>
+                <div class="recipe-card__footer">
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn btn--ghost btn--sm" onclick="showToast('Draft saved','success')">Edit</button>
+                    <button class="btn btn--ghost btn--sm" style="color:var(--rust);" onclick="confirmDelete()">Delete</button>
+                  </div>
+                  <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.8</div>
+                </div>
+              </div>
+            </article>
+            <article class="recipe-card fade-in">
+              <div class="recipe-card__img-wrap">
+                <img src="assets/images/recipe5.png" alt="Chickpea Bowl" class="recipe-card__img" />
+                <button class="recipe-card__bookmark saved" style="background:var(--rust);color:white;">♥</button>
+              </div>
+              <div class="recipe-card__body">
+                <div class="recipe-card__meta">
+                  <span class="tag tag--sage">Lunch</span>
+                  <span class="tag">10 min</span>
+                </div>
+                <a href="recipe.html"><h3 class="recipe-card__title">Mediterranean Chickpea Bowl</h3></a>
+                <p class="recipe-card__desc">A vibrant bowl with roasted chickpeas and lemony tahini dressing.</p>
+                <div class="recipe-card__footer">
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn btn--ghost btn--sm" onclick="showToast('Draft saved','success')">Edit</button>
+                    <button class="btn btn--ghost btn--sm" style="color:var(--rust);" onclick="confirmDelete()">Delete</button>
+                  </div>
+                  <div class="recipe-card__rating"><span class="stars">★★★★☆</span> 4.6</div>
+                </div>
+              </div>
+            </article>
+            <article class="recipe-card fade-in">
+              <div class="recipe-card__img-wrap">
+                <img src="assets/images/recipe4.png" alt="Sourdough" class="recipe-card__img" />
+              </div>
+              <div class="recipe-card__body">
+                <div class="recipe-card__meta">
+                  <span class="tag">Baking</span>
+                  <span class="tag tag--rust">Draft</span>
+                </div>
+                <a href="recipe.html"><h3 class="recipe-card__title">Overnight Sourdough Focaccia</h3></a>
+                <p class="recipe-card__desc">A dimpled, olive-oil drenched focaccia that proves itself overnight in the fridge.</p>
+                <div class="recipe-card__footer">
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn btn--primary btn--sm" onclick="showToast('Recipe published! 🎉','success')">Publish</button>
+                    <button class="btn btn--ghost btn--sm" onclick="showToast('Draft saved','success')">Edit</button>
+                  </div>
+                  <span style="font-size:0.75rem;color:var(--ink-muted);">Draft</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ── Saved Collection ── -->
+        <div class="tab-panel" id="tab-saved">
+          <div class="collection-header">
+            <h2>Saved recipes <span style="color:var(--ink-muted);font-weight:400;">(47)</span></h2>
+            <select class="filter-select">
+              <option>All categories</option>
+              <option>Breakfast</option>
+              <option>Lunch</option>
+              <option>Dinner</option>
+              <option>Desserts</option>
+            </select>
+          </div>
+          <div class="recipe-grid">
+            <article class="recipe-card fade-in">
+              <div class="recipe-card__img-wrap">
+                <img src="assets/images/recipe2.png" alt="Lava Cake" class="recipe-card__img" />
+                <button class="recipe-card__bookmark saved" onclick="unsaveRecipe(this)">♥</button>
+              </div>
+              <div class="recipe-card__body">
+                <div class="recipe-card__meta"><span class="tag tag--rust">Dessert</span><span class="tag">25 min</span></div>
+                <a href="recipe.html"><h3 class="recipe-card__title">Molten Chocolate Lava Cake</h3></a>
+                <p class="recipe-card__desc">Warm, gooey chocolate cake with a molten centre. Serve with vanilla ice cream.</p>
+                <div class="recipe-card__footer">
+                  <div class="recipe-card__author"><div class="avatar">M</div><span>Marco Rossi</span></div>
+                  <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9</div>
+                </div>
+              </div>
+            </article>
+            <article class="recipe-card fade-in">
+              <div class="recipe-card__img-wrap">
+                <img src="assets/images/recipe3.png" alt="Thai Curry" class="recipe-card__img" />
+                <button class="recipe-card__bookmark saved" onclick="unsaveRecipe(this)">♥</button>
+              </div>
+              <div class="recipe-card__body">
+                <div class="recipe-card__meta"><span class="tag">Dinner</span><span class="tag">50 min</span></div>
+                <a href="recipe.html"><h3 class="recipe-card__title">Authentic Thai Green Curry</h3></a>
+                <p class="recipe-card__desc">Fragrant curry made from scratch with homemade paste and coconut milk.</p>
+                <div class="recipe-card__footer">
+                  <div class="recipe-card__author"><div class="avatar">A</div><span>Arisa Tan</span></div>
+                  <div class="recipe-card__rating"><span class="stars">★★★★★</span> 4.9</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ── Activity ── -->
+        <div class="tab-panel" id="tab-activity">
+          <h2 style="font-size:1.2rem;margin-bottom:20px;">Recent activity</h2>
+          <div>
+            <div class="activity-item">
+              <div class="activity-icon">⭐</div>
+              <div>
+                <div class="activity-text">You rated <strong>Molten Chocolate Lava Cake</strong> 5 stars</div>
+                <div class="activity-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">♥</div>
+              <div>
+                <div class="activity-text">You saved <strong>Authentic Thai Green Curry</strong> to your collection</div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">💬</div>
+              <div>
+                <div class="activity-text">You commented on <strong>Rustic Sourdough Loaf</strong> — "Incredible recipe!"</div>
+                <div class="activity-time">3 days ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📝</div>
+              <div>
+                <div class="activity-text">You published <strong>Mediterranean Chickpea Bowl</strong></div>
+                <div class="activity-time">1 week ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">👥</div>
+              <div>
+                <div class="activity-text"><strong>Marco Rossi</strong> followed you</div>
+                <div class="activity-time">1 week ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📝</div>
+              <div>
+                <div class="activity-text">You published <strong>Smashed Avocado Toast</strong></div>
+                <div class="activity-time">2 weeks ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Settings ── -->
+        <div class="tab-panel" id="tab-edit">
+          <h2 style="font-size:1.2rem;margin-bottom:24px;">Profile settings</h2>
+          <div class="form-section">
+            <h3 style="font-family:var(--font-sans);font-size:0.95rem;font-weight:600;margin-bottom:20px;">Personal info</h3>
+            <div class="edit-profile-grid">
+              <div class="form-group">
+                <label class="form-label">First name</label>
+                <input type="text" class="form-input" value="Sarah" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last name</label>
+                <input type="text" class="form-input" value="Chen" />
+              </div>
+            </div>
+            <div class="form-group mt-16">
+              <label class="form-label">Bio</label>
+              <textarea class="form-textarea" style="min-height:80px;">Home cook & food enthusiast · Sharing recipes from my San Francisco kitchen.</textarea>
+            </div>
+            <div class="form-group mt-16">
+              <label class="form-label">Location</label>
+              <input type="text" class="form-input" value="San Francisco, CA" />
+            </div>
+            <div class="form-group mt-16">
+              <label class="form-label">Website</label>
+              <input type="url" class="form-input" placeholder="https://yourblog.com" />
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:24px;">
+              <button class="btn btn--primary" onclick="saveProfile()">Save changes</button>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 style="font-family:var(--font-sans);font-size:0.95rem;font-weight:600;margin-bottom:20px;">Account</h3>
+            <div class="form-group mb-16">
+              <label class="form-label">Email address</label>
+              <input type="email" class="form-input" value="sarah.chen@example.com" />
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">New password</label>
+              <input type="password" class="form-input" placeholder="Leave blank to keep current" />
+            </div>
+            <div class="form-group" style="margin-bottom:24px;">
+              <label class="form-label">Confirm password</label>
+              <input type="password" class="form-input" placeholder="Repeat new password" />
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <button class="btn btn--ghost btn--sm" style="color:var(--rust);" onclick="showToast('Account deletion requires email confirmation','default')">Delete account</button>
+              <button class="btn btn--primary" onclick="saveProfile()">Update account</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── Sidebar ─────────────────────── -->
+      <aside class="profile-sidebar">
+        <div class="sidebar-card">
+          <h3>About</h3>
+          <ul class="about-list">
+            <li class="about-item"><span class="about-item__icon">📅</span>Joined January 2024</li>
+            <li class="about-item"><span class="about-item__icon">📍</span>San Francisco, CA</li>
+            <li class="about-item"><span class="about-item__icon">🍽️</span>Specialises in Asian & Mediterranean</li>
+            <li class="about-item"><span class="about-item__icon">⭐</span>4.7 avg recipe rating</li>
+            <li class="about-item"><span class="about-item__icon">👁</span>18,340 total recipe views</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Top categories</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div class="category-bar-label">
+                <span>Breakfast</span><span>10 recipes</span>
+              </div>
+              <div class="category-bar-track">
+                <div class="category-bar-fill" style="width:42%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="category-bar-label">
+                <span>Lunch</span><span>8 recipes</span>
+              </div>
+              <div class="category-bar-track">
+                <div class="category-bar-fill" style="width:33%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="category-bar-label">
+                <span>Baking</span><span>6 recipes</span>
+              </div>
+              <div class="category-bar-track">
+                <div class="category-bar-fill" style="width:25%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Followers</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <div class="avatar avatar--md" style="background:var(--sage);color:white;font-size:0.9rem;">M</div>
+            <div class="avatar avatar--md" style="background:var(--rust);color:white;font-size:0.9rem;">R</div>
+            <div class="avatar avatar--md" style="background:var(--ink);color:white;font-size:0.9rem;">J</div>
+            <div class="avatar avatar--md" style="background:#8B5CF6;color:white;font-size:0.9rem;">L</div>
+            <div class="avatar avatar--md" style="background:#0EA5E9;color:white;font-size:0.9rem;">A</div>
+            <div class="avatar avatar--md" style="background:var(--cream-dark);color:var(--ink-muted);font-size:0.75rem;font-weight:600;">+307</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentic Thai Green Curry — RecipeNest</title>
+  <meta name="description" content="Learn how to make Authentic Thai Green Curry from scratch with homemade paste, coconut milk, and fresh herbs." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/recipe.css" />
+</head>
+<body>
+
+<!-- ─── Nav ───────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">🍴</div>
+        RecipeNest
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="browse.html" class="nav__link">Browse</a></li>
+        <li><a href="create.html" class="nav__link">Publish</a></li>
+        <li><a href="profile.html" class="nav__link">My Collection</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="btn btn--outline btn--sm" onclick="openModal('auth-modal')">Sign in</button>
+        <button class="btn btn--primary btn--sm" onclick="openModal('auth-modal')">Join free</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Recipe Hero ─────────────────────────────────────── -->
+<div class="recipe-hero">
+  <img src="assets/images/recipe3.png" alt="Authentic Thai Green Curry" class="recipe-hero__img" />
+  <div class="recipe-hero__overlay"></div>
+  <div class="recipe-hero__content">
+    <div class="container">
+      <div style="margin-bottom:12px;">
+        <a href="browse.html" style="color:rgba(255,255,255,.7);font-size:0.85rem;">← Browse</a>
+        <span style="color:rgba(255,255,255,.4);margin:0 8px;">/</span>
+        <span style="color:rgba(255,255,255,.7);font-size:0.85rem;">Dinner</span>
+      </div>
+      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);color:white;letter-spacing:-0.02em;max-width:640px;">
+        Authentic Thai Green Curry
+      </h1>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85);">
+          <div class="avatar" style="background:rgba(255,255,255,.2);color:white;width:30px;height:30px;font-size:0.75rem;">A</div>
+          <span style="font-size:0.875rem;">Arisa Tan</span>
+        </div>
+        <span style="color:rgba(255,255,255,.4);">·</span>
+        <span style="color:rgba(255,255,255,.7);font-size:0.85rem;">Published July 2025</span>
+        <span style="color:rgba(255,255,255,.4);">·</span>
+        <span class="tag tag--ink" style="background:rgba(255,255,255,.15);color:white;">Dinner</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+    <div class="recipe-layout">
+
+      <!-- ─── Main Content ─────────────── -->
+      <div class="recipe-main">
+
+        <!-- Action row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn--outline btn--sm" id="save-btn" onclick="toggleSave(this)">♡ Save recipe</button>
+            <button class="btn btn--ghost btn--sm" onclick="shareRecipe()">↗ Share</button>
+            <button class="btn btn--ghost btn--sm" onclick="printRecipe()">🖨 Print</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:0.875rem;color:var(--ink-muted);">
+            <span>👁</span><span>3,482 views</span>
+            <span style="margin:0 6px;">·</span>
+            <span>♥</span><span>847 saves</span>
+          </div>
+        </div>
+
+        <!-- Meta bar -->
+        <div class="recipe-meta-bar">
+          <div class="meta-box">
+            <span class="meta-box__label">Prep time</span>
+            <span class="meta-box__val">20 min</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-box__label">Cook time</span>
+            <span class="meta-box__val">30 min</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-box__label">Total</span>
+            <span class="meta-box__val">50 min</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-box__label">Servings</span>
+            <span class="meta-box__val">4 people</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-box__label">Difficulty</span>
+            <span class="meta-box__val">Medium</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-box__label">Calories</span>
+            <span class="meta-box__val">420 kcal</span>
+          </div>
+        </div>
+
+        <!-- Author -->
+        <div class="author-card">
+          <div class="avatar avatar--md" style="background:var(--sage-light);color:white;font-size:1rem;">A</div>
+          <div class="author-card__info">
+            <div class="author-card__name">Arisa Tan</div>
+            <div class="author-card__bio">Home cook from Bangkok · 48 published recipes</div>
+          </div>
+          <button class="btn btn--outline btn--sm" onclick="showToast('Following Arisa!', 'success')">Follow</button>
+        </div>
+
+        <!-- Intro -->
+        <p class="recipe-intro">
+          This is my grandmother's recipe for Thai green curry, passed down through generations and refined over decades of cooking in Bangkok kitchens. The key is making the paste from scratch — it takes an extra 15 minutes but the depth of flavour is incomparable to anything from a jar.
+        </p>
+
+        <hr class="divider" />
+
+        <!-- Ingredients -->
+        <div>
+          <div class="ingredients-header">
+            <h2>Ingredients</h2>
+            <div class="servings-ctrl">
+              <span>Serves</span>
+              <button class="servings-btn" onclick="changeServings(-1)">−</button>
+              <span id="servings-count">4</span>
+              <button class="servings-btn" onclick="changeServings(1)">+</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <p class="ingredient-group-label">For the curry paste</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="6">6</span>
+                <span>green bird's eye chillies</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="2">2</span>
+                <span>stalks lemongrass, white part only</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="4">4</span>
+                <span>kaffir lime leaves</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="1">1</span>
+                <span>thumb galangal, peeled and sliced</span>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="ingredient-group-label">For the curry</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="400">400ml</span>
+                <span>full-fat coconut milk</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="500">500g</span>
+                <span>chicken thighs, cut into chunks</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="2">2</span>
+                <span>tbsp fish sauce</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="1">1</span>
+                <span>tbsp palm sugar</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="1">1</span>
+                <span>handful Thai basil leaves</span>
+              </li>
+              <li class="ingredient-item" onclick="toggleIngredient(this)">
+                <input type="checkbox" />
+                <span class="ingredient-amount" data-base="200">200g</span>
+                <span>jasmine rice, to serve</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Instructions -->
+        <h2 style="margin-bottom:24px;">Instructions</h2>
+        <ol class="steps-list">
+          <li class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Make the curry paste</h3>
+              <p>Combine chillies, lemongrass, galangal, kaffir lime leaves, garlic, shallots, shrimp paste and coriander roots in a mortar. Pound with the pestle for 10–12 minutes until you have a smooth, fragrant paste. Alternatively, use a food processor but the texture won't be quite as good.</p>
+              <div class="step-tip">💡 Tip: Toast whole coriander seeds and cumin in a dry pan before grinding for extra depth.</div>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Fry the paste</h3>
+              <p>Heat a wok over medium-high heat. Add half the coconut milk and bring to a simmer. Add the curry paste and stir-fry for 3–4 minutes until deeply fragrant and the oil separates from the paste.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Add protein and coconut milk</h3>
+              <p>Add the chicken pieces and toss to coat. Pour in the remaining coconut milk and 100ml of water or chicken stock. Bring to a gentle simmer and cook for 15 minutes until the chicken is cooked through.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h3>Season and finish</h3>
+              <p>Season with fish sauce and palm sugar to taste — you want a balance of salty, sweet and savoury. Add the Thai basil and kaffir lime leaves, stir through and remove from heat immediately.</p>
+              <div class="step-tip">💡 Tip: Don't cook the basil — add it off the heat so it stays vibrant and fragrant.</div>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h3>Serve</h3>
+              <p>Ladle over steamed jasmine rice. Garnish with extra Thai basil, sliced red chillies and a wedge of lime. Serve immediately.</p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- Comments -->
+        <div class="comments-section">
+          <h2 style="margin-bottom:20px;">Reviews <span style="color:var(--ink-muted);font-weight:400;font-size:0.9rem;">(24)</span></h2>
+
+          <div class="comment-form">
+            <h3>Leave a review</h3>
+            <div class="rate-row">
+              <label>Your rating:</label>
+              <div class="star-rating" id="user-rating">
+                <input type="radio" id="s5" name="rating" value="5" /><label for="s5">★</label>
+                <input type="radio" id="s4" name="rating" value="4" /><label for="s4">★</label>
+                <input type="radio" id="s3" name="rating" value="3" /><label for="s3">★</label>
+                <input type="radio" id="s2" name="rating" value="2" /><label for="s2">★</label>
+                <input type="radio" id="s1" name="rating" value="1" /><label for="s1">★</label>
+              </div>
+            </div>
+            <div class="form-group mb-16">
+              <textarea class="form-textarea" id="comment-input" placeholder="Share your experience with this recipe…"></textarea>
+            </div>
+            <button class="btn btn--primary" onclick="submitComment()">Post review</button>
+          </div>
+
+          <div id="comments-list">
+            <div class="comment">
+              <div class="avatar avatar--md" style="background:var(--sage-light);color:white;font-size:0.9rem;">J</div>
+              <div class="comment__body">
+                <div class="comment__header">
+                  <span class="comment__name">James Park</span>
+                  <span class="comment__date">3 days ago</span>
+                </div>
+                <div style="color:#F59E0B;font-size:0.9rem;margin-bottom:6px;">★★★★★</div>
+                <p class="comment__text">Made this last weekend and it was incredible. The homemade paste really makes all the difference — don't skip it! I added baby aubergines and it worked perfectly.</p>
+              </div>
+            </div>
+            <div class="comment">
+              <div class="avatar avatar--md" style="background:#C1440E;color:white;font-size:0.9rem;">R</div>
+              <div class="comment__body">
+                <div class="comment__header">
+                  <span class="comment__name">Riya Sharma</span>
+                  <span class="comment__date">1 week ago</span>
+                </div>
+                <div style="color:#F59E0B;font-size:0.9rem;margin-bottom:6px;">★★★★☆</div>
+                <p class="comment__text">Absolutely delicious. I used tofu instead of chicken and it turned out beautifully. The tip about adding basil off the heat was a game-changer.</p>
+              </div>
+            </div>
+            <div class="comment">
+              <div class="avatar avatar--md" style="background:var(--ink);color:white;font-size:0.9rem;">M</div>
+              <div class="comment__body">
+                <div class="comment__header">
+                  <span class="comment__name">Marco Rossi</span>
+                  <span class="comment__date">2 weeks ago</span>
+                </div>
+                <div style="color:#F59E0B;font-size:0.9rem;margin-bottom:6px;">★★★★★</div>
+                <p class="comment__text">Best Thai curry recipe I've tried. The balance of flavours is spot on. I've made it three times now!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Sidebar ────────────────────── -->
+      <aside class="recipe-sidebar">
+
+        <!-- Rating card -->
+        <div class="sidebar-card">
+          <div class="rating-widget">
+            <div class="big-rating">4.9</div>
+            <div class="big-stars">★★★★★</div>
+            <div style="font-size:0.8rem;color:var(--ink-muted);">Based on 238 reviews</div>
+          </div>
+          <div class="rating-bars mt-16">
+            <div class="rating-bar-row">
+              <span>5★</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:85%"></div></div>
+              <span>85%</span>
+            </div>
+            <div class="rating-bar-row">
+              <span>4★</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:10%"></div></div>
+              <span>10%</span>
+            </div>
+            <div class="rating-bar-row">
+              <span>3★</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:3%"></div></div>
+              <span>3%</span>
+            </div>
+            <div class="rating-bar-row">
+              <span>2★</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div>
+              <span>1%</span>
+            </div>
+            <div class="rating-bar-row">
+              <span>1★</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div>
+              <span>1%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nutrition card -->
+        <div class="sidebar-card">
+          <h3>Nutrition per serving</h3>
+          <div class="nutrition-grid">
+            <div class="nutrition-item">
+              <div class="nutrition-val">420</div>
+              <div class="nutrition-label">Calories</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-val">28g</div>
+              <div class="nutrition-label">Protein</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-val">32g</div>
+              <div class="nutrition-label">Carbs</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-val">18g</div>
+              <div class="nutrition-label">Fat</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="sidebar-card">
+          <h3>Tags</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="tag">Thai</span>
+            <span class="tag">Curry</span>
+            <span class="tag">Coconut</span>
+            <span class="tag">Spicy</span>
+            <span class="tag">Gluten-free</span>
+            <span class="tag">Weeknight</span>
+            <span class="tag">Asian</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="sidebar-card" style="background:var(--ink);border-color:var(--ink);">
+          <p style="color:rgba(255,255,255,.8);font-size:0.875rem;line-height:1.55;margin-bottom:16px;">Have a recipe like this? Share it with the community.</p>
+          <a href="create.html" class="btn btn--primary w-full" style="justify-content:center;">+ Publish a recipe</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- ─── Auth Modal ───────────────────────────────────────── -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal__close" onclick="closeModal('auth-modal')">✕</button>
+    <div style="text-align:center;margin-bottom:24px;">
+      <h2 style="font-size:1.5rem;">Sign in to continue</h2>
+      <p style="color:var(--ink-muted);font-size:0.875rem;margin-top:6px;">Join RecipeNest to save and review recipes</p>
+    </div>
+    <form onsubmit="e => { e.preventDefault(); closeModal('auth-modal'); }">
+      <div class="form-group mb-16">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com" />
+      </div>
+      <div class="form-group" style="margin-bottom:24px;">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn btn--primary w-full" style="padding:12px;" onclick="closeModal('auth-modal');showToast('Welcome back!','success')">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/recipe.js"></script>
+</body>
+</html>

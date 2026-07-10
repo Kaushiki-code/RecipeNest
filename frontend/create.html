@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publish a Recipe — RecipeNest</title>
+  <meta name="description" content="Share your recipe with the RecipeNest community. Publish ingredients, steps, photos and more." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/create.css" />
+</head>
+<body>
+
+<!-- ─── Nav ───────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">🍴</div>
+        RecipeNest
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="browse.html" class="nav__link">Browse</a></li>
+        <li><a href="create.html" class="nav__link">Publish</a></li>
+        <li><a href="profile.html" class="nav__link">My Collection</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="btn btn--ghost btn--sm" id="save-draft-btn" onclick="saveDraft()">Save draft</button>
+        <button class="btn btn--primary btn--sm" onclick="publishRecipe()">Publish recipe</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="create-header">
+      <h1>Share a recipe</h1>
+      <p>Fill in the details below and publish to the RecipeNest community.</p>
+    </div>
+
+    <div class="create-layout">
+      <form id="create-form" onsubmit="publishRecipe(event)">
+
+        <!-- 1. Cover photo -->
+        <div class="form-section">
+          <div class="form-section-title"><span>1</span> Cover photo</div>
+          <div class="photo-upload" id="photo-upload-area" onclick="document.getElementById('cover-photo').click()">
+            <input type="file" id="cover-photo" accept="image/*" onchange="previewPhoto(this)" style="display:none;" />
+            <div id="upload-placeholder">
+              <div class="photo-upload__icon">📸</div>
+              <div class="photo-upload__text">Click to upload a photo</div>
+              <div class="photo-upload__sub">JPG, PNG or WEBP · Max 10MB · Recommended 1200×800px</div>
+            </div>
+            <div class="photo-upload__preview" id="photo-preview">
+              <img id="preview-img" src="" alt="Preview" />
+              <button class="photo-upload__preview-remove" type="button" onclick="removePhoto(event)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Basic info -->
+        <div class="form-section">
+          <div class="form-section-title"><span>2</span> Basic information</div>
+          <div class="form-group mb-16">
+            <label class="form-label" for="recipe-title">Recipe title *</label>
+            <input type="text" id="recipe-title" class="form-input" placeholder="e.g. Creamy Tuscan Pasta" maxlength="80" oninput="updateProgress()" />
+            <div style="text-align:right;font-size:0.75rem;color:var(--ink-muted);margin-top:3px;">
+              <span id="title-count">0</span>/80
+            </div>
+          </div>
+          <div class="form-group mb-16">
+            <label class="form-label" for="recipe-desc">Short description *</label>
+            <textarea id="recipe-desc" class="form-textarea" placeholder="Describe your recipe in 1–2 sentences. What makes it special?" style="min-height:80px;" oninput="updateProgress()"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="recipe-category">Category *</label>
+              <select id="recipe-category" class="form-select" onchange="updateProgress()">
+                <option value="">Select category…</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="dessert">Desserts</option>
+                <option value="baking">Baking</option>
+                <option value="drinks">Drinks</option>
+                <option value="snacks">Snacks</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="recipe-difficulty">Difficulty</label>
+              <select id="recipe-difficulty" class="form-select">
+                <option value="">Select difficulty…</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Time & servings -->
+        <div class="form-section">
+          <div class="form-section-title"><span>3</span> Time & servings</div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label">Prep time (min)</label>
+              <input type="number" class="form-input" id="prep-time" placeholder="e.g. 15" min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cook time (min)</label>
+              <input type="number" class="form-input" id="cook-time" placeholder="e.g. 30" min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Servings</label>
+              <input type="number" class="form-input" id="servings" placeholder="e.g. 4" min="1" max="100" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Ingredients -->
+        <div class="form-section">
+          <div class="form-section-title"><span>4</span> Ingredients</div>
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <div style="min-width:100px;font-size:0.78rem;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;padding-left:4px;">Amount</div>
+            <div style="flex:1;font-size:0.78rem;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;padding-left:4px;">Ingredient</div>
+          </div>
+          <div class="ingredient-rows" id="ingredient-rows">
+            <div class="ingredient-row">
+              <input type="text" class="form-input" placeholder="2 cups" style="text-align:center;" />
+              <input type="text" class="form-input" placeholder="e.g. all-purpose flour" />
+              <button type="button" class="remove-btn" onclick="removeRow(this, '#ingredient-rows .ingredient-row')">−</button>
+            </div>
+            <div class="ingredient-row">
+              <input type="text" class="form-input" placeholder="1 tsp" style="text-align:center;" />
+              <input type="text" class="form-input" placeholder="e.g. sea salt" />
+              <button type="button" class="remove-btn" onclick="removeRow(this, '#ingredient-rows .ingredient-row')">−</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm mt-12" onclick="addIngredient()">+ Add ingredient</button>
+        </div>
+
+        <!-- 5. Instructions -->
+        <div class="form-section">
+          <div class="form-section-title"><span>5</span> Instructions</div>
+          <div class="step-rows" id="step-rows">
+            <div class="step-row">
+              <div class="step-num-badge">1</div>
+              <textarea class="form-textarea" placeholder="Describe this step clearly…" style="min-height:80px;"></textarea>
+              <button type="button" class="remove-btn" style="margin-top:10px;" onclick="removeRow(this, '#step-rows .step-row');renumberSteps()">−</button>
+            </div>
+            <div class="step-row">
+              <div class="step-num-badge">2</div>
+              <textarea class="form-textarea" placeholder="Continue with the next step…" style="min-height:80px;"></textarea>
+              <button type="button" class="remove-btn" style="margin-top:10px;" onclick="removeRow(this, '#step-rows .step-row');renumberSteps()">−</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm mt-12" onclick="addStep()">+ Add step</button>
+        </div>
+
+        <!-- 6. Tags & dietary -->
+        <div class="form-section">
+          <div class="form-section-title"><span>6</span> Tags & dietary info</div>
+          <div class="form-group mb-16">
+            <label class="form-label">Tags <span style="color:var(--ink-muted);font-weight:400;">(press Enter to add)</span></label>
+            <div class="tag-input-wrap" id="tag-wrap">
+              <input type="text" id="tag-input" placeholder="e.g. Italian, quick, vegetarian…" onkeydown="handleTagKey(event)" />
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Dietary flags</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <label class="diet-check"><input type="checkbox" /> Vegetarian</label>
+              <label class="diet-check"><input type="checkbox" /> Vegan</label>
+              <label class="diet-check"><input type="checkbox" /> Gluten-free</label>
+              <label class="diet-check"><input type="checkbox" /> Dairy-free</label>
+              <label class="diet-check"><input type="checkbox" /> Nut-free</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publish bar (mobile) -->
+        <div style="display:flex;gap:12px;justify-content:flex-end;padding-top:8px;">
+          <button type="button" class="btn btn--outline" onclick="saveDraft()">Save draft</button>
+          <button type="submit" class="btn btn--primary btn--lg">Publish recipe →</button>
+        </div>
+
+      </form>
+
+      <!-- ─── Sidebar ─── -->
+      <aside class="create-sidebar">
+        <div class="sidebar-card">
+          <h3 style="font-family:var(--font-sans);font-size:0.9rem;font-weight:600;margin-bottom:14px;">Progress</h3>
+          <ul class="progress-list" id="progress-list">
+            <li class="progress-item"><div class="progress-dot" id="dot-photo"></div>Cover photo</li>
+            <li class="progress-item"><div class="progress-dot" id="dot-title"></div>Title & description</li>
+            <li class="progress-item"><div class="progress-dot" id="dot-category"></div>Category</li>
+            <li class="progress-item"><div class="progress-dot" id="dot-ingredients"></div>Ingredients</li>
+            <li class="progress-item"><div class="progress-dot" id="dot-steps"></div>Instructions</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-tip">
+          <h4>📸 Photo tips</h4>
+          <p>Good lighting makes all the difference. Shoot near a window in natural light, and use a plain background to let the food shine.</p>
+        </div>
+        <div class="sidebar-tip">
+          <h4>✍️ Writing tips</h4>
+          <p>Write steps as if explaining to a friend. Be specific about temperatures, timings and visual cues (e.g. "until golden brown").</p>
+        </div>
+        <div class="sidebar-tip">
+          <h4>🏷️ Tags</h4>
+          <p>Good tags help people discover your recipe. Include cuisine type, main ingredient and occasion (e.g. "weeknight", "party").</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/create.js"></script>
+</body>
+</html>
