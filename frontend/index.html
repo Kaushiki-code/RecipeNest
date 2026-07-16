@@ -24,9 +24,12 @@
         <li><a href="profile.html" class="nav__link">My Collection</a></li>
       </ul>
       <div class="nav__actions">
-        <button class="btn btn--outline btn--sm" onclick="openModal('auth-modal')">Sign in</button>
-        <button class="btn btn--primary btn--sm" onclick="openModal('auth-modal')">Join free</button>
+        <button class="btn btn--outline btn--sm" id="signin-btn" onclick="openModal('auth-modal')">Sign in</button>
+        <button class="btn btn--primary btn--sm" id="joinbtn" onclick="openModal('auth-modal');switchTab('signup')">Join free</button>
       </div>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -341,24 +344,24 @@
     <form id="auth-form" onsubmit="handleAuth(event)">
       <div id="signup-fields" style="display:none;">
         <div class="form-group mb-16">
-          <label class="form-label">Full name</label>
-          <input type="text" class="form-input" placeholder="Your name" />
+          <label class="form-label" for="auth-name">Full name</label>
+          <input type="text" id="auth-name" name="name" class="form-input" placeholder="Your name" />
         </div>
       </div>
       <div class="form-group mb-16">
-        <label class="form-label">Email address</label>
-        <input type="email" class="form-input"/>
+        <label class="form-label" for="auth-email">Email address</label>
+        <input type="email" id="auth-email" name="email" class="form-input" placeholder="you@example.com" />
       </div>
       <div class="form-group" style="margin-bottom:24px;">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-input" />
+        <label class="form-label" for="auth-password">Password</label>
+        <input type="password" id="auth-password" name="password" class="form-input" placeholder="••••••••" />
       </div>
-      <button type="submit" class="btn btn--primary w-full" style="padding:12px;">Continue</button>
+      <p id="auth-error" style="color:#dc2626;font-size:0.82rem;margin-bottom:12px;display:none;"></p>
+      <button type="submit" id="auth-submit-btn" class="btn btn--primary w-full" style="padding:12px;">Continue</button>
     </form>
   </div>
 </div>
 
-<script src="js/main.js"></script>
 <script src="js/home.js"></script>
 <script src="js/script.js"></script>
 </body>

@@ -51,15 +51,7 @@
       html { scroll-behavior: smooth; }
 
       body {
-        opacity: 0;
-        transition: opacity 220ms ease, transform 220ms ease, background-color 260ms ease, color 260ms ease;
-      }
-
-      body.rn-ready { opacity: 1; }
-
-      body.rn-exiting {
-        opacity: 0;
-        transform: translateY(8px);
+        transition: background-color 260ms ease, color 260ms ease;
       }
 
       .rn-page-loader,
@@ -617,33 +609,16 @@
       if (!container.childElementCount) container.remove();
     }, CONFIG.toastDuration);
   }
-
-  const setPageExitTransition = (targetUrl) => {
-    document.body.classList.add('rn-exiting');
-    window.setTimeout(() => {
-      window.location.href = targetUrl;
-    }, 180);
+  const openModal = (id) => {
+    const overlay = document.getElementById(id);
+    if (overlay) overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
   };
 
-  const bindPageTransitions = () => {
-    document.addEventListener('click', (event) => {
-      const anchor = event.target.closest('a[href]');
-      if (!anchor) return;
-      if (anchor.target === '_blank' || anchor.hasAttribute('download') || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-      const href = anchor.getAttribute('href') || '';
-      if (!href || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:') || href === '#') return;
-
-      const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin) return;
-
-      const current = `${window.location.pathname.replace(/\\/g, '/')}${window.location.search}`;
-      const next = `${url.pathname.replace(/\\/g, '/')}${url.search}`;
-      if (current === next) return;
-
-      event.preventDefault();
-      setPageExitTransition(anchor.href);
-    }, true);
+  const closeModal = (id) => {
+    const overlay = document.getElementById(id);
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
   };
 
   const bindSmoothScrolling = () => {
@@ -686,32 +661,32 @@
   };
 
   const initMobileNav = () => {
-    const navInner = qs('.nav__inner');
-    const links = qs('.nav__links');
-    if (!navInner || !links || qs('.rn-mobile-toggle')) return;
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks  = document.querySelector('.nav__links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', function () {
+        const isOpen = navLinks.classList.toggle('open');
+        hamburger.classList.toggle('is-open', isOpen);
+      });
 
-    const button = document.createElement('button');
-    button.className = 'rn-mobile-toggle';
-    button.type = 'button';
-    button.setAttribute('aria-label', 'Open navigation menu');
-    button.innerHTML = '☰';
-    button.addEventListener('click', () => {
-      const open = links.classList.toggle('rn-nav-links-open');
-      button.classList.toggle('is-open', open);
-    });
-    navInner.appendChild(button);
+      // Close menu when a link is clicked
+      navLinks.querySelectorAll('.nav__link').forEach(function (link) {
+        link.addEventListener('click', function () {
+          navLinks.classList.remove('open');
+          hamburger.classList.remove('is-open');
+        });
+      });
 
-    const closeMenu = () => {
-      if (window.innerWidth > 900) return;
-      links.classList.remove('rn-nav-links-open');
-      button.classList.remove('is-open');
-    };
-
-    window.addEventListener('resize', closeMenu, { passive: true });
-    document.addEventListener('click', (event) => {
-      if (!event.target.closest('.nav__links') && !event.target.closest('.rn-mobile-toggle')) closeMenu();
-    });
+      // Close menu when clicking outside
+      document.addEventListener('click', function (e) {
+        if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('open');
+          hamburger.classList.remove('is-open');
+        }
+      });
+    }
   };
+
 
   const highlightActiveNav = () => {
     const path = window.location.pathname.split(/[\\/]/).pop() || 'index.html';
@@ -960,6 +935,23 @@
 
     showToast(saved ? 'Saved to your collection' : 'Removed from collection', saved ? 'success' : 'default');
     burstHeart(button);
+
+    if (!saved && button.closest('#tab-saved')) {
+      const card = button.closest('.recipe-card');
+      if (card) {
+        card.style.transition = 'opacity 220ms ease, transform 220ms ease';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+        window.setTimeout(() => {
+          card.remove();
+          const countEl = qs('#tab-saved h2 span');
+          if (countEl) {
+            const savedCount = restoreSavedSet().size;
+            countEl.textContent = `(${savedCount})`;
+          }
+        }, 220);
+      }
+    }
   };
 
   const initRecipeCardEffects = () => {
@@ -1193,6 +1185,9 @@
 
   const initForms = () => {
     qsa('.form-group').forEach((group) => {
+      // Skip auth modal form groups — they have their own fixed layout
+      if (group.closest('#auth-modal')) return;
+
       const input = qs('.form-input, .form-textarea, .form-select', group);
       const label = qs('.form-label', group);
       if (!input || !label) return;
@@ -1213,6 +1208,7 @@
 
     qsa('input[type="password"]').forEach((input) => enhancePasswordToggle(input));
   };
+
 
   const enhancePasswordToggle = (input) => {
     if (!input || input.dataset.rnPwEnhanced === 'true') return;
@@ -1298,7 +1294,7 @@
       });
     }
 
-    const commentButton = qsa('[onclick*="submitComment"]')[0];
+    const commentButton = qs('#submit-review-btn');
     if (commentButton && !commentButton.dataset.rnBound) {
       commentButton.dataset.rnBound = 'true';
       commentButton.addEventListener('click', (event) => {
@@ -1347,12 +1343,107 @@
     });
   };
 
+  let activeTab = 'signin';
+
+  const switchTab = (tab) => {
+    activeTab = tab;
+    const signupFields = document.getElementById('signup-fields');
+    const tabSignin    = document.getElementById('tab-signin');
+    const tabSignup    = document.getElementById('tab-signup');
+    const submitBtn    = document.getElementById('auth-submit-btn');
+    if (!signupFields || !tabSignin || !tabSignup) return;
+
+    if (tab === 'signup') {
+      signupFields.style.display = 'block';
+      tabSignup.classList.add('auth-tab-active');
+      tabSignup.classList.remove('auth-tab-inactive');
+      tabSignin.classList.remove('auth-tab-active');
+      tabSignin.classList.add('auth-tab-inactive');
+      if (submitBtn) submitBtn.textContent = 'Create account';
+    } else {
+      signupFields.style.display = 'none';
+      tabSignin.classList.add('auth-tab-active');
+      tabSignin.classList.remove('auth-tab-inactive');
+      tabSignup.classList.remove('auth-tab-active');
+      tabSignup.classList.add('auth-tab-inactive');
+      if (submitBtn) submitBtn.textContent = 'Sign in';
+    }
+
+    const errEl = document.getElementById('auth-error');
+    if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+  };
+
+  const handleAuth = async (e) => {
+    e.preventDefault();
+
+    const email    = (document.getElementById('auth-email')    || {}).value || '';
+    const password = (document.getElementById('auth-password') || {}).value || '';
+    const name     = (document.getElementById('auth-name')     || {}).value || '';
+    const errEl    = document.getElementById('auth-error');
+    const submitBtn = document.getElementById('auth-submit-btn');
+
+    if (!email || !password) {
+      if (errEl) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Please wait…';
+    }
+
+    try {
+      const endpoint = activeTab === 'signup' ? '/api/auth/signup' : '/api/auth/login';
+      const body     = activeTab === 'signup'
+        ? { name, email, password }
+        : { email, password };
+
+      const res  = await fetch(endpoint, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (errEl) { errEl.textContent = data.message || 'Something went wrong.'; errEl.style.display = 'block'; }
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = activeTab === 'signup' ? 'Create account' : 'Sign in'; }
+        return;
+      }
+
+      closeModal('auth-modal');
+      showToast(
+        activeTab === 'signin'
+          ? 'Welcome back! 👋'
+          : 'Account created! Welcome to RecipeNest 🎉',
+        'success'
+      );
+
+      localStorage.setItem('rn-user', JSON.stringify(data.user));
+      updateNavForUser(data.user);
+
+      setTimeout(() => { window.location.href = 'profile.html'; }, 1200);
+
+    } catch (err) {
+      if (errEl) { errEl.textContent = 'Cannot reach server. Is it running?'; errEl.style.display = 'block'; }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = activeTab === 'signup' ? 'Create account' : 'Sign in'; }
+    }
+  };
+
+  const updateNavForUser = (user) => {
+    if (!user) return;
+    const signinBtn = document.getElementById('signin-btn');
+    const joinBtn   = document.getElementById('joinbtn');
+    if (signinBtn) signinBtn.style.display = 'none';
+    if (joinBtn)   joinBtn.style.display   = 'none';
+  };
+
   const initGlobalEnhancements = () => {
     injectStyles();
     ensureLoader();
     ensureProgressBar();
     ensureToastContainer();
-    bindPageTransitions();
     bindSmoothScrolling();
     initStickyNav();
     initMobileNav();
@@ -1372,6 +1463,13 @@
     enhanceButtons();
     initRecipePageHelpers();
     initLoadSkeletons();
+    
+    // Automatically update the nav for logged-in users on load
+    try {
+      const stored = localStorage.getItem('rn-user');
+      if (stored) updateNavForUser(JSON.parse(stored));
+    } catch (_) {}
+
     window.addEventListener('resize', debounce(() => {
       observeReveal();
       initHeroEnhancements();
@@ -1379,10 +1477,14 @@
   };
 
   window.showToast = showToast;
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+  window.switchTab = switchTab;
+  window.handleAuth = handleAuth;
+  window.updateNavForUser = updateNavForUser;
   window.RecipeNestUI = { showToast, applyTheme };
 
   onReady(() => {
-    document.body.classList.add('rn-ready');
     initGlobalEnhancements();
   });
 })();

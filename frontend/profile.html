@@ -27,6 +27,9 @@
       <div class="nav__actions">
         <a href="create.html" class="btn btn--primary btn--sm">+ New recipe</a>
       </div>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -169,7 +172,7 @@
             <article class="recipe-card fade-in">
               <div class="recipe-card__img-wrap">
                 <img src="assets/images/recipe2.png" alt="Lava Cake" class="recipe-card__img" />
-                <button class="recipe-card__bookmark saved" onclick="unsaveRecipe(this)">♥</button>
+                <button class="recipe-card__bookmark saved">♥</button>
               </div>
               <div class="recipe-card__body">
                 <div class="recipe-card__meta"><span class="tag tag--rust">Dessert</span><span class="tag">25 min</span></div>
@@ -184,7 +187,7 @@
             <article class="recipe-card fade-in">
               <div class="recipe-card__img-wrap">
                 <img src="assets/images/recipe3.png" alt="Thai Curry" class="recipe-card__img" />
-                <button class="recipe-card__bookmark saved" onclick="unsaveRecipe(this)">♥</button>
+                <button class="recipe-card__bookmark saved">♥</button>
               </div>
               <div class="recipe-card__body">
                 <div class="recipe-card__meta"><span class="tag">Dinner</span><span class="tag">50 min</span></div>
@@ -256,20 +259,20 @@
             <div class="edit-profile-grid">
               <div class="form-group">
                 <label class="form-label">First name</label>
-                <input type="text" class="form-input" value="Sarah" />
+                <input type="text" class="form-input" id="profile-first-name" value="Sarah" />
               </div>
               <div class="form-group">
                 <label class="form-label">Last name</label>
-                <input type="text" class="form-input" value="Chen" />
+                <input type="text" class="form-input" id="profile-last-name" value="Chen" />
               </div>
             </div>
             <div class="form-group mt-16">
               <label class="form-label">Bio</label>
-              <textarea class="form-textarea" style="min-height:80px;">Home cook & food enthusiast · Sharing recipes from my San Francisco kitchen.</textarea>
+              <textarea class="form-textarea" id="profile-bio" style="min-height:80px;">Home cook & food enthusiast · Sharing recipes from my San Francisco kitchen.</textarea>
             </div>
             <div class="form-group mt-16">
               <label class="form-label">Location</label>
-              <input type="text" class="form-input" value="San Francisco, CA" />
+              <input type="text" class="form-input" id="profile-location" value="San Francisco, CA" />
             </div>
             <div class="form-group mt-16">
               <label class="form-label">Website</label>
@@ -284,15 +287,15 @@
             <h3 style="font-family:var(--font-sans);font-size:0.95rem;font-weight:600;margin-bottom:20px;">Account</h3>
             <div class="form-group mb-16">
               <label class="form-label">Email address</label>
-              <input type="email" class="form-input" value="sarah.chen@example.com" />
+              <input type="email" class="form-input" id="profile-email" value="sarah.chen@example.com" />
             </div>
             <div class="form-group mb-16">
               <label class="form-label">New password</label>
-              <input type="password" class="form-input" placeholder="Leave blank to keep current" />
+              <input type="password" class="form-input" id="profile-new-password" placeholder="Leave blank to keep current" />
             </div>
             <div class="form-group" style="margin-bottom:24px;">
               <label class="form-label">Confirm password</label>
-              <input type="password" class="form-input" placeholder="Repeat new password" />
+              <input type="password" class="form-input" id="profile-confirm-password" placeholder="Repeat new password" />
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <button class="btn btn--ghost btn--sm" style="color:var(--rust);" onclick="showToast('Account deletion requires email confirmation','default')">Delete account</button>
@@ -362,7 +365,17 @@
   </div>
 </main>
 
-<script src="js/main.js"></script>
+<footer style="background:var(--ink);color:rgba(255,255,255,.5);padding:32px 0;margin-top:48px;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:var(--font-serif);font-size:1.1rem;color:white;">🍴 RecipeNest</div>
+    <p style="font-size:0.8rem;">© 2025 RecipeNest. Made with ❤️ for food lovers.</p>
+    <div style="display:flex;gap:16px;font-size:0.8rem;">
+      <a href="#" style="color:rgba(255,255,255,.5)">Privacy</a>
+      <a href="#" style="color:rgba(255,255,255,.5)">Terms</a>
+    </div>
+  </div>
+</footer>
+
 <script src="js/profile.js"></script>
 <script src="js/script.js"></script>
 </body>

@@ -170,9 +170,10 @@ async function connectDB() {
       await Recipe.insertMany(defaultRecipes);
       console.log('Database successfully seeded!');
     }
-  } catch (err) {
-    console.error('MongoDB connection/seeding failed:', err.message);
-    console.error('   Make sure MongoDB is running. Try: mongod');
+  } 
+  catch (err) {
+    console.error('MongoDB connection failed:', err.message);
+    
     process.exit(1);
   }
 }

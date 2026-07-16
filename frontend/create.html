@@ -28,6 +28,9 @@
         <button class="btn btn--ghost btn--sm" id="save-draft-btn" onclick="saveDraft()">Save draft</button>
         <button class="btn btn--primary btn--sm" onclick="publishRecipe()">Publish recipe</button>
       </div>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -217,7 +220,18 @@
   </div>
 </main>
 
-<script src="js/main.js"></script>
+<footer style="background:var(--ink);color:rgba(255,255,255,.5);padding:32px 0;margin-top:48px;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:var(--font-serif);font-size:1.1rem;color:white;">🍴 RecipeNest</div>
+    <p style="font-size:0.8rem;">© 2025 RecipeNest. Made with ❤️ for food lovers.</p>
+    <div style="display:flex;gap:16px;font-size:0.8rem;">
+      <a href="#" style="color:rgba(255,255,255,.5)">Privacy</a>
+      <a href="#" style="color:rgba(255,255,255,.5)">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/home.js"></script>
 <script src="js/create.js"></script>
 <script src="js/script.js"></script>
 </body>

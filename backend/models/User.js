@@ -1,7 +1,4 @@
 // backend/models/User.js
-// ─────────────────────────────────────────────
-// User model schema definition with bio and location support
-// ─────────────────────────────────────────────
 
 const mongoose = require('mongoose');
 

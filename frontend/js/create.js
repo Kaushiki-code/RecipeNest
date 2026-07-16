@@ -8,12 +8,12 @@ function previewPhoto(input) {
     const previewImg = document.getElementById('preview-img');
     const placeholder = document.getElementById('upload-placeholder');
     const previewContainer = document.getElementById('photo-preview');
-    const dotPhoto = document.getElementById('dot-photo');
 
     if (previewImg) previewImg.src = e.target.result;
     if (placeholder) placeholder.style.display = 'none';
     if (previewContainer) previewContainer.style.display = 'block';
-    if (dotPhoto) dotPhoto.classList.add('done');
+    
+    updateProgress();
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -24,31 +24,56 @@ function removePhoto(e) {
   const placeholder = document.getElementById('upload-placeholder');
   const previewContainer = document.getElementById('photo-preview');
   const coverPhoto = document.getElementById('cover-photo');
-  const dotPhoto = document.getElementById('dot-photo');
 
   if (previewImg) previewImg.src = '';
   if (placeholder) placeholder.style.display = 'block';
   if (previewContainer) previewContainer.style.display = 'none';
   if (coverPhoto) coverPhoto.value = '';
-  if (dotPhoto) dotPhoto.classList.remove('done');
+  
+  updateProgress();
 }
 
 /* ── Progress tracker ── */
 function updateProgress() {
+  const previewImg = document.getElementById('preview-img');
   const titleInput = document.getElementById('recipe-title');
   const descInput = document.getElementById('recipe-desc');
   const catInput = document.getElementById('recipe-category');
+  
+  const dotPhoto = document.getElementById('dot-photo');
   const dotTitle = document.getElementById('dot-title');
   const dotCategory = document.getElementById('dot-category');
+  const dotIngredients = document.getElementById('dot-ingredients');
+  const dotSteps = document.getElementById('dot-steps');
 
-  if (!titleInput || !descInput || !catInput) return;
+  // Photo check
+  const hasPhoto = previewImg && previewImg.src && previewImg.src !== '' && !previewImg.src.endsWith('create.html');
+  if (dotPhoto) dotPhoto.classList.toggle('done', hasPhoto);
 
-  const title = titleInput.value.trim();
-  const desc = descInput.value.trim();
-  const cat = catInput.value;
-
+  // Title & description check
+  const title = titleInput ? titleInput.value.trim() : '';
+  const desc = descInput ? descInput.value.trim() : '';
   if (dotTitle) dotTitle.classList.toggle('done', title.length > 2 && desc.length > 5);
+
+  // Category check
+  const cat = catInput ? catInput.value : '';
   if (dotCategory) dotCategory.classList.toggle('done', cat !== '');
+
+  // Ingredients check
+  let hasIngredients = false;
+  const ingredientInputs = document.querySelectorAll('#ingredient-rows .ingredient-row input[placeholder*="Ingredient"], #ingredient-rows .ingredient-row input[placeholder*="ingredient"]');
+  ingredientInputs.forEach(input => {
+    if (input.value.trim().length > 0) hasIngredients = true;
+  });
+  if (dotIngredients) dotIngredients.classList.toggle('done', hasIngredients);
+
+  // Steps check
+  let hasSteps = false;
+  const stepTextareas = document.querySelectorAll('#step-rows .step-row textarea');
+  stepTextareas.forEach(textarea => {
+    if (textarea.value.trim().length > 0) hasSteps = true;
+  });
+  if (dotSteps) dotSteps.classList.toggle('done', hasSteps);
 }
 
 /* ── Add ingredient ── */
@@ -64,8 +89,7 @@ function addIngredient() {
   `;
   rows.appendChild(row);
   row.querySelector('input').focus();
-  const dotIngredients = document.getElementById('dot-ingredients');
-  if (dotIngredients) dotIngredients.classList.add('done');
+  updateProgress();
 }
 
 /* ── Add step ── */
@@ -82,8 +106,7 @@ function addStep() {
   `;
   rows.appendChild(row);
   row.querySelector('textarea').focus();
-  const dotSteps = document.getElementById('dot-steps');
-  if (dotSteps) dotSteps.classList.add('done');
+  updateProgress();
 }
 
 /* ── Remove row ── */
@@ -94,7 +117,10 @@ function removeRow(btn, selector) {
     return;
   }
   const rowElement = btn.closest(selector.split(' ').pop());
-  if (rowElement) rowElement.remove();
+  if (rowElement) {
+    rowElement.remove();
+    updateProgress();
+  }
 }
 
 /* ── Renumber steps ── */
@@ -126,10 +152,17 @@ function saveDraft() {
 }
 
 /* ── Publish ── */
-function publishRecipe(e) {
+async function publishRecipe(e) {
   if (e) e.preventDefault();
+  
   const titleInput = document.getElementById('recipe-title');
   const descInput = document.getElementById('recipe-desc');
+  const catInput = document.getElementById('recipe-category');
+  const diffInput = document.getElementById('recipe-difficulty');
+  const prepInput = document.getElementById('prep-time');
+  const cookInput = document.getElementById('cook-time');
+  const servingsInput = document.getElementById('servings');
+
   if (!titleInput || !descInput) return;
 
   const title = titleInput.value.trim();
@@ -141,19 +174,109 @@ function publishRecipe(e) {
   const desc = descInput.value.trim();
   if (!desc) {
     showToast('Please add a description', 'error');
+    descInput.focus();
     return;
   }
-  showToast('Recipe published! 🎉', 'success');
-  setTimeout(() => { window.location.href = 'recipe.html'; }, 1200);
+
+  // Parse ingredients
+  const ingredients = [];
+  document.querySelectorAll('#ingredient-rows .ingredient-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const amount = inputs[0]?.value.trim() || '';
+    const name = inputs[1]?.value.trim() || '';
+    if (name) {
+      ingredients.push({ amount, name });
+    }
+  });
+
+  // Parse steps
+  const steps = [];
+  document.querySelectorAll('#step-rows .step-row textarea').forEach(textarea => {
+    const stepText = textarea.value.trim();
+    if (stepText) {
+      steps.push(stepText);
+    }
+  });
+
+  // Parse tags
+  const tags = [];
+  document.querySelectorAll('#tag-wrap .tag-chip span').forEach(span => {
+    tags.push(span.textContent.trim());
+  });
+
+  const payload = {
+    title,
+    description: desc,
+    category: catInput?.value || 'dinner',
+    difficulty: diffInput?.value || 'easy',
+    prepTime: parseInt(prepInput?.value) || 0,
+    cookTime: parseInt(cookInput?.value) || 0,
+    servings: parseInt(servingsInput?.value) || 4,
+    ingredients,
+    steps,
+    tags
+  };
+
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.message || 'Failed to publish recipe', 'error');
+      return;
+    }
+
+    showToast('Recipe published successfully! 🎉', 'success');
+    setTimeout(() => { 
+      window.location.href = `recipe.html?id=${data.recipe._id}`; 
+    }, 1200);
+
+  } catch (err) {
+    console.error('Failed to publish recipe:', err);
+    showToast('Server error publishing recipe', 'error');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  /* ── Title counter ── */
+  // Check auth state on load
+  fetch('/api/auth/me').then(res => {
+    if (!res.ok) {
+      showToast('Please sign in first', 'error');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+  });
+
+  /* ── Title counter & progress binders ── */
   const titleInput = document.getElementById('recipe-title');
   if (titleInput) {
     titleInput.addEventListener('input', function() {
       const countEl = document.getElementById('title-count');
       if (countEl) countEl.textContent = this.value.length;
+      updateProgress();
     });
   }
+
+  const descInput = document.getElementById('recipe-desc');
+  if (descInput) {
+    descInput.addEventListener('input', updateProgress);
+  }
+
+  // Listen for input changes in ingredients and steps to update progress reactively
+  const ingRows = document.getElementById('ingredient-rows');
+  if (ingRows) {
+    ingRows.addEventListener('input', updateProgress);
+  }
+  const stepRows = document.getElementById('step-rows');
+  if (stepRows) {
+    stepRows.addEventListener('input', updateProgress);
+  }
+
+  // Trigger initial progress check
+  updateProgress();
 });

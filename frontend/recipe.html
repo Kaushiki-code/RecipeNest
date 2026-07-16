@@ -28,6 +28,9 @@
         <button class="btn btn--outline btn--sm" onclick="openModal('auth-modal')">Sign in</button>
         <button class="btn btn--primary btn--sm" onclick="openModal('auth-modal')">Join free</button>
       </div>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -70,7 +73,7 @@
         <!-- Action row -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn btn--outline btn--sm" id="save-btn" onclick="toggleSave(this)">♡ Save recipe</button>
+            <button class="btn btn--outline btn--sm" id="save-btn">♡ Save recipe</button>
             <button class="btn btn--ghost btn--sm" onclick="shareRecipe()">↗ Share</button>
             <button class="btn btn--ghost btn--sm" onclick="printRecipe()">🖨 Print</button>
           </div>
@@ -138,66 +141,68 @@
             </div>
           </div>
 
-          <div style="margin-bottom:16px;">
-            <p class="ingredient-group-label">For the curry paste</p>
-            <ul class="ingredient-list">
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="6">6</span>
-                <span>green bird's eye chillies</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="2">2</span>
-                <span>stalks lemongrass, white part only</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="4">4</span>
-                <span>kaffir lime leaves</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="1">1</span>
-                <span>thumb galangal, peeled and sliced</span>
-              </li>
-            </ul>
-          </div>
+          <div id="recipe-ingredients-container">
+            <div style="margin-bottom:16px;">
+              <p class="ingredient-group-label">For the curry paste</p>
+              <ul class="ingredient-list">
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="6">6</span>
+                  <span>green bird's eye chillies</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="2">2</span>
+                  <span>stalks lemongrass, white part only</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="4">4</span>
+                  <span>kaffir lime leaves</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="1">1</span>
+                  <span>thumb galangal, peeled and sliced</span>
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <p class="ingredient-group-label">For the curry</p>
-            <ul class="ingredient-list">
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="400">400ml</span>
-                <span>full-fat coconut milk</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="500">500g</span>
-                <span>chicken thighs, cut into chunks</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="2">2</span>
-                <span>tbsp fish sauce</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="1">1</span>
-                <span>tbsp palm sugar</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="1">1</span>
-                <span>handful Thai basil leaves</span>
-              </li>
-              <li class="ingredient-item" onclick="toggleIngredient(this)">
-                <input type="checkbox" />
-                <span class="ingredient-amount" data-base="200">200g</span>
-                <span>jasmine rice, to serve</span>
-              </li>
-            </ul>
+            <div>
+              <p class="ingredient-group-label">For the curry</p>
+              <ul class="ingredient-list">
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="400">400ml</span>
+                  <span>full-fat coconut milk</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="500">500g</span>
+                  <span>chicken thighs, cut into chunks</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="2">2</span>
+                  <span>tbsp fish sauce</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="1">1</span>
+                  <span>tbsp palm sugar</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="1">1</span>
+                  <span>handful Thai basil leaves</span>
+                </li>
+                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                  <input type="checkbox" />
+                  <span class="ingredient-amount" data-base="200">200g</span>
+                  <span>jasmine rice, to serve</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -205,45 +210,47 @@
 
         <!-- Instructions -->
         <h2 style="margin-bottom:24px;">Instructions</h2>
-        <ol class="steps-list">
-          <li class="step-item">
-            <div class="step-num">1</div>
-            <div class="step-content">
-              <h3>Make the curry paste</h3>
-              <p>Combine chillies, lemongrass, galangal, kaffir lime leaves, garlic, shallots, shrimp paste and coriander roots in a mortar. Pound with the pestle for 10–12 minutes until you have a smooth, fragrant paste. Alternatively, use a food processor but the texture won't be quite as good.</p>
-              <div class="step-tip">💡 Tip: Toast whole coriander seeds and cumin in a dry pan before grinding for extra depth.</div>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">2</div>
-            <div class="step-content">
-              <h3>Fry the paste</h3>
-              <p>Heat a wok over medium-high heat. Add half the coconut milk and bring to a simmer. Add the curry paste and stir-fry for 3–4 minutes until deeply fragrant and the oil separates from the paste.</p>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">3</div>
-            <div class="step-content">
-              <h3>Add protein and coconut milk</h3>
-              <p>Add the chicken pieces and toss to coat. Pour in the remaining coconut milk and 100ml of water or chicken stock. Bring to a gentle simmer and cook for 15 minutes until the chicken is cooked through.</p>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">4</div>
-            <div class="step-content">
-              <h3>Season and finish</h3>
-              <p>Season with fish sauce and palm sugar to taste — you want a balance of salty, sweet and savoury. Add the Thai basil and kaffir lime leaves, stir through and remove from heat immediately.</p>
-              <div class="step-tip">💡 Tip: Don't cook the basil — add it off the heat so it stays vibrant and fragrant.</div>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">5</div>
-            <div class="step-content">
-              <h3>Serve</h3>
-              <p>Ladle over steamed jasmine rice. Garnish with extra Thai basil, sliced red chillies and a wedge of lime. Serve immediately.</p>
-            </div>
-          </li>
-        </ol>
+        <div id="recipe-steps-container">
+          <ol class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h3>Make the curry paste</h3>
+                <p>Combine chillies, lemongrass, galangal, kaffir lime leaves, garlic, shallots, shrimp paste and coriander roots in a mortar. Pound with the pestle for 10–12 minutes until you have a smooth, fragrant paste. Alternatively, use a food processor but the texture won't be quite as good.</p>
+                <div class="step-tip">💡 Tip: Toast whole coriander seeds and cumin in a dry pan before grinding for extra depth.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h3>Fry the paste</h3>
+                <p>Heat a wok over medium-high heat. Add half the coconut milk and bring to a simmer. Add the curry paste and stir-fry for 3–4 minutes until deeply fragrant and the oil separates from the paste.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h3>Add protein and coconut milk</h3>
+                <p>Add the chicken pieces and toss to coat. Pour in the remaining coconut milk and 100ml of water or chicken stock. Bring to a gentle simmer and cook for 15 minutes until the chicken is cooked through.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h3>Season and finish</h3>
+                <p>Season with fish sauce and palm sugar to taste — you want a balance of salty, sweet and savoury. Add the Thai basil and kaffir lime leaves, stir through and remove from heat immediately.</p>
+                <div class="step-tip">💡 Tip: Don't cook the basil — add it off the heat so it stays vibrant and fragrant.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <h3>Serve</h3>
+                <p>Ladle over steamed jasmine rice. Garnish with extra Thai basil, sliced red chillies and a wedge of lime. Serve immediately.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
 
         <!-- Comments -->
         <div class="comments-section">
@@ -264,7 +271,7 @@
             <div class="form-group mb-16">
               <textarea class="form-textarea" id="comment-input" placeholder="Share your experience with this recipe…"></textarea>
             </div>
-            <button class="btn btn--primary" onclick="submitComment()">Post review</button>
+            <button class="btn btn--primary" id="submit-review-btn">Post review</button>
           </div>
 
           <div id="comments-list">
@@ -396,24 +403,47 @@
   <div class="modal" style="position:relative;">
     <button class="modal__close" onclick="closeModal('auth-modal')">✕</button>
     <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:2rem;margin-bottom:8px;">🍴</div>
       <h2 style="font-size:1.5rem;">Sign in to continue</h2>
       <p style="color:var(--ink-muted);font-size:0.875rem;margin-top:6px;">Join RecipeNest to save and review recipes</p>
     </div>
-    <form onsubmit="e => { e.preventDefault(); closeModal('auth-modal'); }">
+    <div style="display:flex;gap:0;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:24px;">
+      <button id="tab-signin" class="btn w-full auth-tab-active" style="border-radius:0;" onclick="switchTab('signin')">Sign in</button>
+      <button id="tab-signup" class="btn w-full auth-tab-inactive" style="border-radius:0;" onclick="switchTab('signup')">Create account</button>
+    </div>
+    <form id="auth-form" onsubmit="handleAuth(event)">
+      <div id="signup-fields" style="display:none;">
+        <div class="form-group mb-16">
+          <label class="form-label" for="auth-name">Full name</label>
+          <input type="text" id="auth-name" name="name" class="form-input" placeholder="Your name" />
+        </div>
+      </div>
       <div class="form-group mb-16">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="you@example.com" />
+        <label class="form-label" for="auth-email">Email address</label>
+        <input type="email" id="auth-email" name="email" class="form-input" placeholder="you@example.com" />
       </div>
       <div class="form-group" style="margin-bottom:24px;">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-input" placeholder="••••••••" />
+        <label class="form-label" for="auth-password">Password</label>
+        <input type="password" id="auth-password" name="password" class="form-input" placeholder="••••••••" />
       </div>
-      <button type="submit" class="btn btn--primary w-full" style="padding:12px;" onclick="closeModal('auth-modal');showToast('Welcome back!','success')">Sign in</button>
+      <p id="auth-error" style="color:#dc2626;font-size:0.82rem;margin-bottom:12px;display:none;"></p>
+      <button type="submit" id="auth-submit-btn" class="btn btn--primary w-full" style="padding:12px;">Continue</button>
     </form>
   </div>
 </div>
 
-<script src="js/main.js"></script>
+<footer style="background:var(--ink);color:rgba(255,255,255,.5);padding:32px 0;margin-top:0;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:var(--font-serif);font-size:1.1rem;color:white;">🍴 RecipeNest</div>
+    <p style="font-size:0.8rem;">© 2025 RecipeNest. Made with ❤️ for food lovers.</p>
+    <div style="display:flex;gap:16px;font-size:0.8rem;">
+      <a href="#" style="color:rgba(255,255,255,.5)">Privacy</a>
+      <a href="#" style="color:rgba(255,255,255,.5)">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/home.js"></script>
 <script src="js/recipe.js"></script>
 <script src="js/script.js"></script>
 </body>

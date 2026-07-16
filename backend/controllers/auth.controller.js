@@ -1,7 +1,4 @@
-// backend/controllers/auth.controller.js
-// ─────────────────────────────────────────────
 // Authentication logic
-// ─────────────────────────────────────────────
 
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
